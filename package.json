@@ -1,0 +1,27 @@
+{
+  "name": "laksmi",
+  "version": "3.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview",
+    "test": "jest src",
+    "testwatch": "jest --watch src"
+  },
+  "dependencies": {
+    "vue": "^3.2.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.9.6",
+    "@vitejs/plugin-vue": "^1.9.0",
+    "@vue/compiler-sfc": "^3.2.13",
+    "@vue/test-utils": "^2.0.0-rc.16",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.6",
+    "typescript": "^4.4.3",
+    "vite": "^2.5.10",
+    "vue-jest": "^5.0.0-alpha.10",
+    "vue-tsc": "^0.2.2"
+  }
+}

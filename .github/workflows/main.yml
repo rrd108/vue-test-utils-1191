@@ -1,0 +1,50 @@
+# example: https://github.com/cakephp/cakephp/blob/master/.github/workflows/ci.yml
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: '*'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  testsuite:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      -   uses: getong/mariadb-action@v1.1
+          with:
+              mysql database: 'laksmi'
+              mysql root password: '123'
+      
+      -   uses: actions/checkout@v2
+
+      -   name: Setup Enviroment
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: '8.0'
+              extensions: intl, mbstring, simplexml, pdo, pdo_mysql
+              coverage: pcov
+
+      -   name: Install Packages in the temporary container
+          working-directory: ./api
+          run: composer install
+
+      -   name: Run tests
+          working-directory: ./api
+          run: |
+              export DATABASE_TEST_URL='mysql://root:123@127.0.0.1/laksmi'
+              export CODECOVERAGE=1
+              vendor/bin/phpunit --verbose --coverage-clover=coverage.xml tests
+      
+      -   name: Submit code coverage
+          uses: codecov/codecov-action@v2
+          with:
+              token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
